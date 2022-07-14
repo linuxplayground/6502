@@ -243,6 +243,26 @@ _print_memory_range:
         writeln_tty #dump_line
         rts
 
+_go_address:
+        stz stack_flag
+        sta tokens_pointer
+        stx tokens_pointer+1
+        strgettoken tokens_pointer, 1
+        copy_ptr ptr1, start_address_pointer
+
+        parse_hex_word start_address_pointer
+        bcc @error
+
+        ; LSB 
+        stx start_address
+        ; MSB 
+        sta start_address+1
+        ; Jump to the address defined at start_address
+        jmp (start_address)     ; does not return code has to jump back to monitor at A405
+@error:
+        writeln_tty #parseerr
+        rts
+
 _put_value:
         sta tokens_pointer
         stx tokens_pointer+1
@@ -719,6 +739,7 @@ menu:
         menuitem stack_cmd,  1, stack_desc,  _get_stack
         menuitem zero_cmd,   1, zero_desc,   _get_zero
         menuitem disasm_cmd, 2, disasm_desc, _disasm_address
+        menuitem go_cmd,     2, go_desc,     _go_address
         endmenu 
 
 get_cmd:
@@ -727,6 +748,10 @@ get_2_desc:
         .asciiz "GET xxxx - get data at the address xxxx"
 get_4_desc:
         .asciiz "GET xxxx:yyyy - get data between addresses xxxx and yyyy"
+go_cmd:
+        .asciiz "GO"
+go_desc:
+        .asciiz "GO xxxx - jmp to address xxxx"
 put_cmd:
         .asciiz "PUT"
 put_desc:
