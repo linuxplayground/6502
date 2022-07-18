@@ -1,0 +1,10 @@
+      .import i2c_start
+      .import i2c_stop
+      .import i2c_init
+      .import i2c_send_ack
+      .import i2c_send_nak
+      .import i2c_read_ack
+      .import i2c_clear
+      .import i2c_send_byte
+      .import i2c_read_byte
+      .import i2c_send_addr

@@ -101,20 +101,21 @@ BASE_LIBRARY=$(COMMON_ROOT)/none.lib
 
 # Common objects to be linked
 COMMON_SOURCES=syscalls.s    \
-							 acia.s        \
+			   acia.s        \
                blink.s       \
-							 core.s        \
-							 keyboard.s    \
-							 lcd.s         \
-							 $(LCD_MODULE) \
-							 modem.s       \
-							 string.s      \
-							 utils.s       \
-							 via.s         \
-							 via_utils.s   \
-							 tty.s         \
-							 parse.s       \
-							 menu.s
+			   core.s        \
+			   keyboard.s    \
+			   lcd.s         \
+			   $(LCD_MODULE) \
+			   modem.s       \
+			   string.s      \
+			   utils.s       \
+			   via.s         \
+			   via_utils.s   \
+			   tty.s         \
+			   parse.s       \
+			   menu.s		 \
+			   i2c.s
 
 COMMON_OBJECTS=$(COMMON_SOURCES:%.s=$(COMMON_BUILD_FOLDER)/%.o)
 
@@ -242,7 +243,7 @@ emu: $(FIRMWARE_BINARY)
 	$(X6502_BINARY) $<
 
 terminal:
-	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) /dev/tty.usbserial-DN4QHYAP
+	$(PICOCOM_BINARY) $(PICOCOM_FLAGS) /dev/tty.usbserial-A50285BI
 
 # Clean generated files
 clean:

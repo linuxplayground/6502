@@ -88,3 +88,14 @@
         .forceimport _syscall_run_menu
         .forceimport _syscall__setup_menuitem
 
+; i2c routines
+        .forceimport _syscall__i2c_start
+        .forceimport _syscall__i2c_stop
+        .forceimport _syscall__i2c_init
+        .forceimport _syscall__i2c_send_ack
+        .forceimport _syscall__i2c_send_nak
+        .forceimport _syscall__i2c_read_ack
+        .forceimport _syscall__i2c_clear
+        .forceimport _syscall__i2c_send_byte
+        .forceimport _syscall__i2c_read_byte
+        .forceimport _syscall__i2c_send_addr

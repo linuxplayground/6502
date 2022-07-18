@@ -11,6 +11,7 @@
         .include "parse.inc"
         .include "menu.inc"
         .include "via_utils.inc"
+        .include "i2c.inc"
 
 ; Init routines
         .export _syscall__system_init
@@ -101,6 +102,17 @@
         .export _syscall__run_menu
         .export _syscall_run_menu
         .export _syscall__setup_menuitem
+; i2c routines
+        .export _syscall__i2c_start
+        .export _syscall__i2c_stop
+        .export _syscall__i2c_init
+        .export _syscall__i2c_send_ack
+        .export _syscall__i2c_send_nak
+        .export _syscall__i2c_read_ack
+        .export _syscall__i2c_clear
+        .export _syscall__i2c_send_byte
+        .export _syscall__i2c_read_byte
+        .export _syscall__i2c_send_addr
 
         .segment "SYSCALLS"
 
@@ -264,3 +276,23 @@ _syscall_run_menu:
         SYSCALL_VECTOR run_menu
 _syscall__setup_menuitem:
         SYSCALL_VECTOR _setup_menuitem
+_syscall__i2c_start:
+        SYSCALL_VECTOR i2c_start
+_syscall__i2c_stop:
+        SYSCALL_VECTOR i2c_stop
+_syscall__i2c_init:
+        SYSCALL_VECTOR i2c_init
+_syscall__i2c_send_ack:
+        SYSCALL_VECTOR i2c_send_ack
+_syscall__i2c_send_nak:
+        SYSCALL_VECTOR i2c_send_nak
+_syscall__i2c_read_ack:
+        SYSCALL_VECTOR i2c_read_ack
+_syscall__i2c_clear:
+        SYSCALL_VECTOR i2c_clear
+_syscall__i2c_send_byte:
+        SYSCALL_VECTOR i2c_send_byte
+_syscall__i2c_read_byte:
+        SYSCALL_VECTOR i2c_read_byte      
+_syscall__i2c_send_addr:
+        SYSCALL_VECTOR i2c_send_addr

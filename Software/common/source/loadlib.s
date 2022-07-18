@@ -89,6 +89,17 @@
         .export _run_menu
         .export run_menu
         .export _setup_menuitem
+; i2c routines
+        .export i2c_start
+        .export i2c_stop
+        .export i2c_init
+        .export i2c_send_ack
+        .export i2c_send_nak
+        .export i2c_read_ack
+        .export i2c_clear
+        .export i2c_send_byte
+        .export i2c_read_byte
+        .export i2c_send_addr
 
         .code
 
@@ -332,3 +343,25 @@ run_menu:
 
 _setup_menuitem:
         jmp (_syscall__setup_menuitem)
+
+; i2c routines
+i2c_start:
+        jmp (_syscall__i2c_start)
+i2c_stop:
+        jmp (_syscall__i2c_stop)
+i2c_init:
+        jmp (_syscall__i2c_init)
+i2c_send_ack:
+        jmp (_syscall__i2c_send_ack)
+i2c_send_nak:
+        jmp (_syscall__i2c_send_nak)
+i2c_read_ack:
+        jmp (_syscall__i2c_read_ack)
+i2c_clear:
+        jmp (_syscall__i2c_clear)
+i2c_send_byte:
+        jmp (_syscall__i2c_send_byte)
+i2c_read_byte:
+        jmp (_syscall__i2c_read_byte)
+i2c_send_addr:
+        jmp (_syscall__i2c_send_addr)
