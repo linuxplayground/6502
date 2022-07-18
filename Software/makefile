@@ -68,7 +68,8 @@ LOADABLE_PROJECTS = 01_blink_test        \
 										26_duart_sync        \
                     27_duart_async       \
                     28_music             \
-                    29_i2c_test
+                    29_i2c_test          \
+                    30_lcd_dec_test
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 

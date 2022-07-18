@@ -63,6 +63,7 @@
         .export _syscall__lcd_scroll_down
         .export _syscall__lcd_define_char
         .export _syscall_lcd_define_char
+        .export _syscall__lcd_write_dec
 ; XMODEM routines
         .export _syscall__modem_send
         .export _syscall__modem_receive
@@ -103,16 +104,16 @@
         .export _syscall_run_menu
         .export _syscall__setup_menuitem
 ; i2c routines
-        .export _syscall__i2c_start
-        .export _syscall__i2c_stop
-        .export _syscall__i2c_init
-        .export _syscall__i2c_send_ack
-        .export _syscall__i2c_send_nak
-        .export _syscall__i2c_read_ack
-        .export _syscall__i2c_clear
-        .export _syscall__i2c_send_byte
-        .export _syscall__i2c_read_byte
-        .export _syscall__i2c_send_addr
+        .export _syscall_i2c_start
+        .export _syscall_i2c_stop
+        .export _syscall_i2c_init
+        .export _syscall_i2c_send_ack
+        .export _syscall_i2c_send_nak
+        .export _syscall_i2c_read_ack
+        .export _syscall_i2c_clear
+        .export _syscall_i2c_send_byte
+        .export _syscall_i2c_read_byte
+        .export _syscall_i2c_send_addr
 
         .segment "SYSCALLS"
 
@@ -208,6 +209,8 @@ _syscall__lcd_define_char:
         SYSCALL_VECTOR _lcd_define_char
 _syscall_lcd_define_char:
         SYSCALL_VECTOR lcd_define_char
+_syscall__lcd_write_dec:
+        SYSCALL_VECTOR _lcd_write_dec
 _syscall__modem_send:
         SYSCALL_VECTOR _modem_send
 _syscall__modem_receive:
@@ -276,23 +279,23 @@ _syscall_run_menu:
         SYSCALL_VECTOR run_menu
 _syscall__setup_menuitem:
         SYSCALL_VECTOR _setup_menuitem
-_syscall__i2c_start:
+_syscall_i2c_start:
         SYSCALL_VECTOR i2c_start
-_syscall__i2c_stop:
+_syscall_i2c_stop:
         SYSCALL_VECTOR i2c_stop
-_syscall__i2c_init:
+_syscall_i2c_init:
         SYSCALL_VECTOR i2c_init
-_syscall__i2c_send_ack:
+_syscall_i2c_send_ack:
         SYSCALL_VECTOR i2c_send_ack
-_syscall__i2c_send_nak:
+_syscall_i2c_send_nak:
         SYSCALL_VECTOR i2c_send_nak
-_syscall__i2c_read_ack:
+_syscall_i2c_read_ack:
         SYSCALL_VECTOR i2c_read_ack
-_syscall__i2c_clear:
+_syscall_i2c_clear:
         SYSCALL_VECTOR i2c_clear
-_syscall__i2c_send_byte:
+_syscall_i2c_send_byte:
         SYSCALL_VECTOR i2c_send_byte
-_syscall__i2c_read_byte:
+_syscall_i2c_read_byte:
         SYSCALL_VECTOR i2c_read_byte      
-_syscall__i2c_send_addr:
+_syscall_i2c_send_addr:
         SYSCALL_VECTOR i2c_send_addr

@@ -18,6 +18,7 @@
         .export _lcd_scroll_down
         .export _lcd_define_char
         .export lcd_define_char
+        .export _lcd_write_dec
 
         .export LCD_DM_CURSOR_NOBLINK
         .export LCD_DM_CURSOR_BLINK
@@ -501,6 +502,55 @@ lcd_clear_line:
         plx
         pla
         rts
+        
+; POSITIVE C COMPLIANT
+; Hex number is A/X
+_lcd_write_dec:
+        sta hex_to_dec_in_buffer
+        stx hex_to_dec_in_buffer+1
+        convert_hex_to_dec hex_to_dec_in_buffer, #hex_to_dec_out_buffer
+        copy_ptr #hex_to_dec_out_buffer, ptr1
+        ldy #$02
+        ldx #$00
+@byte_loop:
+        lda (ptr1),y
+        phy
+        phx
+        jsr convert_to_hex
+        txa
+        plx 
+        sta hex_to_dec_print_buffer,x
+        inx
+        tya
+        sta hex_to_dec_print_buffer,x
+        inx
+        ply
+        dey
+        bpl @byte_loop
+        ldx #$ff
+@skip_leading_zeros_loop:
+        inx 
+        cpx #$05
+        beq @print_rest
+        lda hex_to_dec_print_buffer,x
+        cmp #('0')
+        bne @print_rest
+        bra @skip_leading_zeros_loop
+@print_rest:
+        lda hex_to_dec_print_buffer,x
+        jsr _lcd_print_char
+        inx
+        cpx #$06
+        bne @print_rest
+        rts
+
+        .SEGMENT "BSS"
+hex_to_dec_in_buffer:
+        .res 2
+hex_to_dec_out_buffer:
+        .res 3
+hex_to_dec_print_buffer:
+        .res 6
 
         .SEGMENT "RODATA"
 

@@ -14,6 +14,7 @@
         .import _lcd_scroll_down
         .import _lcd_define_char
         .import lcd_define_char
+        .import _lcd_write_dec
 
 ; Display mode command parameters
 LCD_DM_CURSOR_NOBLINK   = %00000000

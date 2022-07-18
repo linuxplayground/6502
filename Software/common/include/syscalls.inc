@@ -48,6 +48,7 @@
         .forceimport _syscall__lcd_scroll_down
         .forceimport _syscall__lcd_define_char
         .forceimport _syscall_lcd_define_char
+        .forceimport _syscall__lcd_write_dec
 ; XMODEM routines
         .forceimport _syscall__modem_send
         .forceimport _syscall__modem_receive
@@ -89,13 +90,13 @@
         .forceimport _syscall__setup_menuitem
 
 ; i2c routines
-        .forceimport _syscall__i2c_start
-        .forceimport _syscall__i2c_stop
-        .forceimport _syscall__i2c_init
-        .forceimport _syscall__i2c_send_ack
-        .forceimport _syscall__i2c_send_nak
-        .forceimport _syscall__i2c_read_ack
-        .forceimport _syscall__i2c_clear
-        .forceimport _syscall__i2c_send_byte
-        .forceimport _syscall__i2c_read_byte
-        .forceimport _syscall__i2c_send_addr
+        .forceimport _syscall_i2c_start
+        .forceimport _syscall_i2c_stop
+        .forceimport _syscall_i2c_init
+        .forceimport _syscall_i2c_send_ack
+        .forceimport _syscall_i2c_send_nak
+        .forceimport _syscall_i2c_read_ack
+        .forceimport _syscall_i2c_clear
+        .forceimport _syscall_i2c_send_byte
+        .forceimport _syscall_i2c_read_byte
+        .forceimport _syscall_i2c_send_addr

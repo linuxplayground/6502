@@ -50,6 +50,7 @@
         .export _lcd_scroll_down
         .export _lcd_define_char
         .export lcd_define_char
+        .export _lcd_write_dec
 ; XMODEM routines
         .export _modem_send
         .export _modem_receive
@@ -236,6 +237,8 @@ _lcd_define_char:
 
 lcd_define_char:
         jmp (_syscall_lcd_define_char)
+_lcd_write_dec:
+        jmp (_syscall__lcd_write_dec)
 
 ; XMODEM routines
 _modem_send:
@@ -346,22 +349,22 @@ _setup_menuitem:
 
 ; i2c routines
 i2c_start:
-        jmp (_syscall__i2c_start)
+        jmp (_syscall_i2c_start)
 i2c_stop:
-        jmp (_syscall__i2c_stop)
+        jmp (_syscall_i2c_stop)
 i2c_init:
-        jmp (_syscall__i2c_init)
+        jmp (_syscall_i2c_init)
 i2c_send_ack:
-        jmp (_syscall__i2c_send_ack)
+        jmp (_syscall_i2c_send_ack)
 i2c_send_nak:
-        jmp (_syscall__i2c_send_nak)
+        jmp (_syscall_i2c_send_nak)
 i2c_read_ack:
-        jmp (_syscall__i2c_read_ack)
+        jmp (_syscall_i2c_read_ack)
 i2c_clear:
-        jmp (_syscall__i2c_clear)
+        jmp (_syscall_i2c_clear)
 i2c_send_byte:
-        jmp (_syscall__i2c_send_byte)
+        jmp (_syscall_i2c_send_byte)
 i2c_read_byte:
-        jmp (_syscall__i2c_read_byte)
+        jmp (_syscall_i2c_read_byte)
 i2c_send_addr:
-        jmp (_syscall__i2c_send_addr)
+        jmp (_syscall_i2c_send_addr)
