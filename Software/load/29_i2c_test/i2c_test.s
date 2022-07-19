@@ -1,6 +1,5 @@
     .include "utils.inc"
     .include "lcd.inc"
-    .include "tty.inc"
     .include "i2c.inc"
 
     .code
@@ -8,7 +7,6 @@
 init:
 
     jsr _lcd_init
-    jsr _tty_init
 
     jsr i2c_init    ; set up ports
 
@@ -57,28 +55,25 @@ init:
     jsr i2c_stop
 
     ; display temp on the lcd and terminal
-    write_tty #STRTEMP
+    write_lcd #STRTEMP
     lda temp
     ldx #0
-    jsr _tty_write_dec
-    write_tty #STRPT
+    jsr _lcd_write_dec
+    write_lcd #STRPT
     lda temp + 1
     ldx #0
-    jsr _tty_write_dec
-    write_tty #STRTMPSFX
-    jsr _tty_send_newline
+    jsr _lcd_write_dec
+    write_lcd #STRTMPSFX
+    jsr _lcd_newline
 
     ; display humidity on the lcd and terminal
-    write_tty #STRHUMI
+    write_lcd #STRHUMI
     lda humi
     ldx #0
-    jsr _tty_write_dec
-    write_tty #STRHUMSFX
+    jsr _lcd_write_dec
+    write_lcd #STRHUMSFX
 
-    jsr _tty_send_newline
-
-    lda #%00000101  ; set output SERIAL and input to SERIAL.
-    jsr _tty_init
+    jsr _lcd_newline
 
     rts
 
