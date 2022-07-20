@@ -14,7 +14,6 @@
     
     .import __VIA1_START__
     VIA1_PORTA = __VIA1_START__ + $01
-    VIA1_IFR   = __VIA1_START__ + $0d
 
     .bss
 count:

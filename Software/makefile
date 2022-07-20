@@ -70,7 +70,8 @@ LOADABLE_PROJECTS = 01_blink_test        \
                     28_music             \
                     29_i2c_test          \
                     30_lcd_dec_test      \
-                    31_key_pad_polling
+                    31_key_pad_polling   \
+                    32_pcf8574
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 
