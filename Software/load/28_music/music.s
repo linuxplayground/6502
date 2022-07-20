@@ -1,6 +1,9 @@
     .include "lcd.inc"
 
+	.import __VIA1_START__
     .import __VIA2_START__
+
+	VIA1_PORTA  = __VIA1_START__ + $1	; check if some buttons have been pressed.
 
     VIA2_PORTB  = __VIA2_START__ + $0   ; Port B
     VIA2_PORTA  = __VIA2_START__ + $1   ; Port A
@@ -75,6 +78,12 @@ wait:
 
 	ldy temp_y
 	iny
+
+	lda VIA1_PORTA	; if someone presses the down button make the
+	and #$0F		; pain end.
+	cmp #$08
+	beq end
+	
 	jmp play
 
 end:
