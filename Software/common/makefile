@@ -104,7 +104,6 @@ COMMON_SOURCES=syscalls.s    \
 			   acia.s        \
                blink.s       \
 			   core.s        \
-			   keyboard.s    \
 			   lcd.s         \
 			   $(LCD_MODULE) \
 			   modem.s       \
