@@ -2,6 +2,7 @@
         .include "blink.inc"
         .include "lcd.inc"
         .include "acia.inc"
+        .include "keypad.inc"
         .include "modem.inc"
         .include "zeropage.inc"
         .include "utils.inc"
@@ -17,6 +18,7 @@
         .export _syscall__blink_init
         .export _syscall__lcd_init
         .export _syscall__acia_init
+        .export _syscall_keypad_init
 ; Core routines
         .export _syscall__register_user_break
         .export _syscall__deregister_user_break
@@ -108,6 +110,9 @@
         .export _syscall_i2c_send_byte
         .export _syscall_i2c_read_byte
         .export _syscall_i2c_send_addr
+; keypad routines
+        .export _syscall_keypad_init
+        .export _syscall_keypad_scan
 
         .segment "SYSCALLS"
 
@@ -127,6 +132,8 @@ _syscall__lcd_init:
         SYSCALL_VECTOR _lcd_init
 _syscall__acia_init:
         SYSCALL_VECTOR _acia_init
+_syscall_keypad_init:
+        SYSCALL_VECTOR keypad_init
 _syscall__register_user_break:
         SYSCALL_VECTOR _register_user_break
 _syscall__deregister_user_break:
@@ -285,3 +292,5 @@ _syscall_i2c_read_byte:
         SYSCALL_VECTOR i2c_read_byte      
 _syscall_i2c_send_addr:
         SYSCALL_VECTOR i2c_send_addr
+_syscall_keypad_scan:
+        SYSCALL_VECTOR keypad_scan

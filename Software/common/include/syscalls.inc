@@ -3,6 +3,7 @@
         .forceimport _syscall__blink_init
         .forceimport _syscall__lcd_init
         .forceimport _syscall__acia_init
+        .forceimport _syscall_keypad_init
 ; Core routines
         .forceimport _syscall__register_user_break
         .forceimport _syscall__deregister_user_break
@@ -83,7 +84,6 @@
         .forceimport _syscall__run_menu
         .forceimport _syscall_run_menu
         .forceimport _syscall__setup_menuitem
-
 ; i2c routines
         .forceimport _syscall_i2c_start
         .forceimport _syscall_i2c_stop
@@ -95,3 +95,5 @@
         .forceimport _syscall_i2c_send_byte
         .forceimport _syscall_i2c_read_byte
         .forceimport _syscall_i2c_send_addr
+; keypad routines
+        .forceimport _syscall_keypad_scan

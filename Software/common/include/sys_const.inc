@@ -9,3 +9,8 @@ CHAR_SPACE              = $20
 CHAR_TAB                = $09
 CHAR_DOUBLEQUOTE        = $22
 CHAR_BACKSLASH          = $5c
+
+KEYPAD_LEFT             = $01
+KEYPAD_UP               = $02
+KEYPAD_RIGHT            = $04
+KEYPAD_DOWN             = $08

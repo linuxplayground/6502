@@ -1,7 +1,9 @@
     .include "lcd.inc"
+	.include "sys_const.inc"
 
 	.import __VIA1_START__
     .import __VIA2_START__
+	.import keypad_scan
 
 	VIA1_PORTA  = __VIA1_START__ + $1	; check if some buttons have been pressed.
 
@@ -79,11 +81,12 @@ wait:
 	ldy temp_y
 	iny
 
-	lda VIA1_PORTA	; if someone presses the down button make the
-	and #$0F		; pain end.
-	cmp #$08
+	clc
+	jsr keypad_scan
+	bcc play
+	cmp #KEYPAD_RIGHT
+
 	beq end
-	
 	jmp play
 
 end:

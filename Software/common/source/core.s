@@ -1,9 +1,12 @@
         .include "via.inc"
         .include "zeropage.inc"
         .include "utils.inc"
+        .include "keypad.inc"
+        .include "sys_const.inc"
         .include "lcd.inc"
         .include "acia.inc"
         .include "blink.inc"
+        .include "via_const.inc"
 
         .import __USERRAM_START__
         .import __USERRAM_SIZE__
@@ -57,6 +60,8 @@ _system_init:
         jsr _lcd_init
         ; Initialize ACIA
         jsr _acia_init
+        ; Initialize Keypad
+        jsr keypad_init
         ; Disable BCD mode
         cld
         ; Enable interrupt processing
@@ -76,7 +81,7 @@ _interrupt_handler:
         bpl check_via1
         jsr _handle_acia_irq
 check_via1:
-        ; TODO: Handle VIA1 Buttons IRQ
+        ; TODO: Check via 1 interrupts
 check_via2:
         ; bit VIA2_IFR
         ; TODO: Missing VIA2 IRQ handler
