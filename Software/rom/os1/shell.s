@@ -35,7 +35,7 @@
 
         .code
 _run_shell:
-        lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_INPUT_KEYBOARD | TTY_CONFIG_OUTPUT_SERIAL)
+        lda #(TTY_CONFIG_INPUT_SERIAL | TTY_CONFIG_OUTPUT_SERIAL)
         jsr _tty_init
 
         ; Display banner
