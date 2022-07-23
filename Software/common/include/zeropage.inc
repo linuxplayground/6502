@@ -12,7 +12,7 @@
 .globalzp lcd_temp_char1
 .globalzp lcd_temp_char2
 .globalzp lcd_temp_char3
-.globalzp keypad_config
+.globalzp keypad_buf
 .globalzp acia_rx_rptr
 .globalzp acia_rx_wptr
 .globalzp acia_tx_rptr

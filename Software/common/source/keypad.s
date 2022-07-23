@@ -9,6 +9,12 @@
         .code
 
 keypad_init:
+        ; Set up Interrupt on CA1 positive edge
+        lda #(VIA_IER_SET_FLAGS|VIA_IER_CA1_FLAG)
+        sta VIA1_IER
+        lda #(VIA_PCR_CA1_INTERRUPT_POSITIVE)
+        sta VIA1_PCR
+
         ; set up VIA1_DDRA / PORTA bottom 4 pins as input.
         ; top 4 pins are unused - leave them as input too.
         ; 0  1  2  3  4  5  6  7

@@ -81,7 +81,28 @@ _interrupt_handler:
         bpl check_via1
         jsr _handle_acia_irq
 check_via1:
-        ; TODO: Check via 1 interrupts
+        ; bit 7 on IFR is 1, an interrupt has triggered.
+        ; check if it was caused by CA1
+        ; transfers bit 7 into N of the status register
+        bit VIA1_IFR
+        ; branch on N = 0
+        bpl check_via2
+        ; save registers
+        pha
+        phx
+        phy
+        ; read port A (clears the interrupt)
+        lda VIA1_PORTA
+        ; mask out the bottom 4 bits (4 buttons)
+        and #$0F
+        ; save the value into keypad buff
+        sta keypad_buf
+        ; strobe the LED (should help with debouncing)
+        jsr _strobe_led
+        ; restore registers
+        ply
+        plx
+        pla
 check_via2:
         ; bit VIA2_IFR
         ; TODO: Missing VIA2 IRQ handler

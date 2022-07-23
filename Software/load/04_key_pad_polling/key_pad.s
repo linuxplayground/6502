@@ -11,6 +11,7 @@
     .include "core.inc"
     .include "utils.inc"
     .include "blink.inc"
+    .include "zeropage.inc"
     
     .import __VIA1_START__
     VIA1_PORTA = __VIA1_START__ + $01
@@ -38,7 +39,6 @@ str_exit:
 loop:
     lda quit_flag
     bne quit
-    clc
     jsr read_key                        ; if carry is set, a key was pressed.
     bcc end_loop                        ; carry not set, no key pressed.
 update:
@@ -55,8 +55,7 @@ quit:
     rts
 
 read_key:
-    lda VIA1_PORTA
-    and #$0f
+    lda keypad_buf
     cmp #$01
     beq @left
     cmp #$02
@@ -68,24 +67,28 @@ read_key:
     jmp @end_read_key
 @left:
     dec count
-    bne @strobe
+    bne @set
     dec count + 1
-    jmp @strobe
+    jmp @set
 @up:
     stz count
     stz count + 1
-    jmp @strobe
+    jmp @set
 @right:
     inc count
-    bne @strobe
+    bne @set
     inc count + 1
-    jmp @strobe
+    jmp @set
 @down:
     inc quit_flag        ; flag to quit.
     ; fall through
-@strobe:
-    jsr _strobe_led
+@set:
     sec
+    jmp @end_read_key
+@clear:
+    clc
 @end_read_key:
+    ; reset keypad_buf after reading it.
+    stz keypad_buf
     rts
 

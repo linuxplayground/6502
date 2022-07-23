@@ -80,13 +80,11 @@ wait:
 
 	ldy temp_y
 	iny
-
-	clc
-	jsr keypad_scan
-	bcc play
+	
+	lda keypad_buf
 	cmp #KEYPAD_RIGHT
-
 	beq end
+	stz keypad_buf
 	jmp play
 
 end:
