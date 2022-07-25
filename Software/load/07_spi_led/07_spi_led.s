@@ -6,7 +6,7 @@ VIA2_PORTA  = __VIA2_START__ + $1	; check if some buttons have been pressed.
 VIA2_DDRA   = __VIA2_START__ + $3   ; Port A data direction register
 
 SCK   = %00000001
-CS    = %00000010
+CS    = %00001000
 MOSI  = %00000100
 
 DECODE_MODE     = $09                       
@@ -34,60 +34,42 @@ col:    .res 1
         ldx #0
         jsr spisend
 
+        ; paint a heart.
+        ; it's rotated CCW 90deg on the breadboard such that:
+        ; A=1, x(MSB) is at bottom left corner.
+        ; A=8, x(LSB) is at top right corner.
 
-        lda #8          ; 8th col
-        sta row
-        ldx #%00000001  ; bottom row
-        stx col
-
-right:
-        jsr tick
-        dec row
-        bne right
-        ; row is now 0
         lda #1
-        sta row ; reset row to 1
-        clc     ; clear carr
-        rol col
-        bcs exit    ; exit if we get to top.
-left:
-        jsr tick
-        inc row
-        lda row
-        cmp #8
-        bne left
-        clc
-        rol col
-        bcs exit
-        jmp right
-
-
-tick:
-        lda row
-        ldx col
+        ldx #%00001100
         jsr spisend
-        lda #50
-        jsr _delay_ms
-        ldx #0
-        lda row
-        jsr spisend
-        ldy #50
-        lda #50
-        jsr _delay_ms
-        rts
 
-heart:
-        jsr led_clear
-        ldy #9
-heart_lp:
-        dey
-        beq exit
-        lda img_heart,y
-        tax
-        tya
+        lda #2
+        ldx #%00010010
         jsr spisend
-        jmp heart_lp
 
+        lda #3
+        ldx #%00100010
+        jsr spisend
+
+        lda #4
+        ldx #%01000100
+        jsr spisend
+
+        lda #5
+        ldx #%00100010
+        jsr spisend
+
+        lda #6
+        ldx #%00010010
+        jsr spisend
+
+        lda #7
+        ldx #%00001100
+        jsr spisend
+
+        lda #8
+        ldx #%00000000
+        jsr spisend
 
 exit:
         rts
@@ -175,15 +157,4 @@ spibyte2:
         bne spibytelp	; (2) loop
         lda inb		    ; get result
         rts
-
-        .rodata
-img_heart:
-        .byte %01101100
-        .byte %10010010
-        .byte %10000010
-        .byte %01000100
-        .byte %00101000
-        .byte %00010000
-        .byte %00000000
-        .byte %10101010
         

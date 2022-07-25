@@ -50,7 +50,7 @@ main:
         jsr spibyte         ; read garbage first char.
 
 read_loop:
-        lda #$00            ; send garbage data - we only want to read now.
+        lda #$ff            ; send garbage data - we only want to read now (MOSI is HIGH on each bit.)
         jsr spibyte
         cmp #$05            ; was end of file received?
         beq @print_buffer   ; yes, jmp to print buffer
@@ -75,22 +75,22 @@ spibyte:
         sty inb
         ldx #8
 spibytelp:
-        tya		        ; (2) set A to 0
-        asl outb	    ; (5) shift MSB in to carry
+        tya		; (2) set A to 0
+        asl outb	; (5) shift MSB in to carry
         bcc spibyte1	; (2)
-        ora #MOSI	    ; (2) set MOSI if MSB set
+        ora #MOSI	; (2) set MOSI if MSB set
 spibyte1:
         sta VIA2_PORTA	; (4) output (MOSI, SCS low, SCLK low)
-        tya		        ; (2) set A to 0 (Do it here for delay reasons)
+        tya		; (2) set A to 0 (Do it here for delay reasons)
         inc VIA2_PORTA	; (6) toggle clock high (SCLK is bit 0)
-        clc		        ; (2) clear C (Not affected by bit)
+        clc		; (2) clear C (Not affected by bit)
         bit VIA2_PORTA  ; (4) copy MISO (bit 7) in to N (and MOSI in to V)
         bpl spibyte2	; (2)
-        sec		        ; (2) set C is MISO bit is set (i.e. N)
+        sec		; (2) set C is MISO bit is set (i.e. N)
 spibyte2:
-        rol inb		    ; (5) copy C (i.e. MISO bit) in to bit 0 of result
+        rol inb		; (5) copy C (i.e. MISO bit) in to bit 0 of result
         dec VIA2_PORTA  ; (6) toggle clock low (SCLK is bit 0)
-        dex		        ; (2) next bit
+        dex		; (2) next bit
         bne spibytelp	; (2) loop
-        lda inb		    ; get result
+        lda inb		; get result
         rts
