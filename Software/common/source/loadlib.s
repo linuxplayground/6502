@@ -99,6 +99,14 @@
         .export i2c_send_addr
 ; keypad routines
         .export keypad_scan
+; fat32 routines
+        .export fat32_init
+        .export fat32_list
+        .export fat32_openfile
+        .export fat32_readfile
+; sd routines
+        .export sd_init
+        .export sd_readsector
 
         .code
 
@@ -287,3 +295,19 @@ i2c_send_addr:
 ; keypad routines
 keypad_scan:
         jmp (_syscall_keypad_scan)
+; sd routines
+
+; fat32 routines
+fat32_init:
+        jmp (_syscall_fat32_init)
+fat32_list:
+        jmp (_syscall_fat32_list)
+fat32_openfile:
+        jmp (_syscall_fat32_openfile)
+fat32_readfile:
+        jmp (_syscall_fat32_readfile)
+; sd routines
+sd_init:
+        jmp (_syscall_sd_init)
+sd_readsector:
+        jmp (_syscall_sd_readsector)

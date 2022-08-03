@@ -84,3 +84,8 @@ VIA_REGISTER_PCR   = $0c
 VIA_REGISTER_IFR   = $0d
 VIA_REGISTER_IER   = $0e
 VIA_REGISTER_PANH  = $0f
+
+SPI_CS              = %00010000     ; CS
+SPI_SCK             = %00001000     ; SCK
+SPI_MOSI            = %00000100     ; DI
+SPI_MISO            = %00000010     ; DO

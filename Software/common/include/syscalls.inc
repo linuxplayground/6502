@@ -97,3 +97,11 @@
         .forceimport _syscall_i2c_send_addr
 ; keypad routines
         .forceimport _syscall_keypad_scan
+; fat32 routines
+        .forceimport _syscall_fat32_init
+        .forceimport _syscall_fat32_list
+        .forceimport _syscall_fat32_openfile
+        .forceimport _syscall_fat32_readfile
+; sd routines
+        .forceimport _syscall_sd_init
+        .forceimport _syscall_sd_readsector

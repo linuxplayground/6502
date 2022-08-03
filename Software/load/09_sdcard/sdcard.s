@@ -146,9 +146,9 @@ sd_init:
   sta VIA2_PORTA
   dex
   bne @preinitloop
-  
 
-cmd0: ; GO_IDLE_STATE - resets card to idle state, and SPI mode
+
+cmd0: ; GO_IDLE_STATE - resets card to idle state
   lda #<cmd0_bytes
   sta zp_sd_cmd_address
   lda #>cmd0_bytes
@@ -330,7 +330,7 @@ sd_sendcommand:
   ; End command
   lda #(SD_CS | SD_MOSI)   ; set CS high again
   sta VIA2_PORTA
-
+  
   pla   ; restore result code
   rts
 
@@ -364,4 +364,3 @@ delay:
   dex
   bne @loop
   rts
-

@@ -22,7 +22,8 @@ LOADABLE_PROJECTS = 01_music             \
                     06_msbasic           \
                     07_spi_led           \
                     08_spi               \
-                    09_sdcard
+                    09_sdcard            \
+                    10_fat32
 
 FIRMWARE_BINARIES=$(FIRMWARE_PROJECTS:%=$(ROM_FOLDER)/%.$(ADDRESS_MODE).bin)
 

@@ -28,3 +28,7 @@ system_break_sp:       .res 1
 user_break_address:    .res 2
 user_break_sp:         .res 1
 user_irq_address:      .res 2
+zp_send_cmd_bytes:     .res 2
+zp_sd_address:         .res 2
+fat32_filename_ptr:    .res 2
+fat32_action:          .res 1

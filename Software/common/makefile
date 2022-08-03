@@ -107,6 +107,8 @@ COMMON_SOURCES=syscalls.s    \
 			   keypad.s      \
 			   lcd.s         \
 			   $(LCD_MODULE) \
+			   libfat32.s    \
+			   libsd.s       \
 			   modem.s       \
 			   string.s      \
 			   utils.s       \

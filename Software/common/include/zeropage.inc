@@ -24,4 +24,7 @@
 .globalzp user_break_address
 .globalzp user_break_sp
 .globalzp user_irq_address
-
+.globalzp zp_send_cmd_bytes
+.globalzp zp_sd_address
+.globalzp fat32_filename_ptr
+.globalzp fat32_action

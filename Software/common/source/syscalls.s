@@ -12,6 +12,8 @@
         .include "menu.inc"
         .include "via_utils.inc"
         .include "i2c.inc"
+        .include "libfat32.inc"
+        .include "libsd.inc"
 
 ; Init routines
         .export _syscall__system_init
@@ -113,6 +115,14 @@
 ; keypad routines
         .export _syscall_keypad_init
         .export _syscall_keypad_scan
+; fat32 routines
+        .export _syscall_fat32_init
+        .export _syscall_fat32_list
+        .export _syscall_fat32_openfile
+        .export _syscall_fat32_readfile
+; sd routines
+        .export _syscall_sd_init
+        .export _syscall_sd_readsector
 
         .segment "SYSCALLS"
 
@@ -294,3 +304,15 @@ _syscall_i2c_send_addr:
         SYSCALL_VECTOR i2c_send_addr
 _syscall_keypad_scan:
         SYSCALL_VECTOR keypad_scan
+_syscall_fat32_init:
+        SYSCALL_VECTOR fat32_init
+_syscall_fat32_list:
+        SYSCALL_VECTOR fat32_list
+_syscall_fat32_openfile:
+        SYSCALL_VECTOR fat32_openfile
+_syscall_fat32_readfile:
+        SYSCALL_VECTOR fat32_readfile
+_syscall_sd_init:
+        SYSCALL_VECTOR sd_init
+_syscall_sd_readsector:
+        SYSCALL_VECTOR sd_readsector
