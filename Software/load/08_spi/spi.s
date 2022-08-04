@@ -6,16 +6,17 @@
     .include "utils.inc"
     .include "macros.inc"
     .include "lcd.inc"
+    .include "tty.inc"
 
     .import __VIA2_START__
 
 VIA2_PORTA  = __VIA2_START__ + $1	; check if some buttons have been pressed.
 VIA2_DDRA   = __VIA2_START__ + $3   ; Port A data direction register
 
-SCK   = %00000001
-CS    = %00000010
-MOSI  = %00000100
-MISO  = %10000000
+CS              = %00100000     ; CS
+SCK             = %00001000     ; SCK
+MOSI            = %00000100     ; DI
+MISO            = %00000010     ; DO
 
 
         .zeropage
@@ -46,12 +47,11 @@ main:
                             ; put 1016=0b
                             ; go 1000
                             ;
-        jsr spibyte
-        jsr spibyte         ; read garbage first char.
+        jsr spi_writebyte
 
 read_loop:
-        lda #$ff            ; send garbage data - we only want to read now (MOSI is HIGH on each bit.)
-        jsr spibyte
+        jsr spi_readbyte    ; send garbage data - we only want to read now (MOSI is HIGH on each bit.)
+        jsr _tty_send_character
         cmp #$05            ; was end of file received?
         beq @print_buffer   ; yes, jmp to print buffer
         sta (bufptr)        ; no, save the byte into the buffer
@@ -68,29 +68,54 @@ read_loop:
         sta VIA2_PORTA
         rts
 
-; Sends a byte and returns whatever came back on MISO in A.
-spibyte:
-        sta outb
-        ldy #0
-        sty inb
-        ldx #8
-spibytelp:
-        tya		; (2) set A to 0
-        asl outb	; (5) shift MSB in to carry
-        bcc spibyte1	; (2)
-        ora #MOSI	; (2) set MOSI if MSB set
-spibyte1:
-        sta VIA2_PORTA	; (4) output (MOSI, SCS low, SCLK low)
-        tya		; (2) set A to 0 (Do it here for delay reasons)
-        inc VIA2_PORTA	; (6) toggle clock high (SCLK is bit 0)
-        clc		; (2) clear C (Not affected by bit)
-        bit VIA2_PORTA  ; (4) copy MISO (bit 7) in to N (and MOSI in to V)
-        bpl spibyte2	; (2)
-        sec		; (2) set C is MISO bit is set (i.e. N)
-spibyte2:
-        rol inb		; (5) copy C (i.e. MISO bit) in to bit 0 of result
-        dec VIA2_PORTA  ; (6) toggle clock low (SCLK is bit 0)
-        dex		; (2) next bit
-        bne spibytelp	; (2) loop
-        lda inb		; get result
-        rts
+; -----------------------------------------------------------------------------
+; Enable the card and tick the clock 8 times with MOSI high, 
+; capturing bits from MISO and returning them.
+; Inputs: None
+; Outputs: byte received from SD card in A
+; clobbers: X, Y
+; -----------------------------------------------------------------------------
+spi_readbyte:
+    ldx #$fe    ; Preloaded with seven ones and a zero, so we stop after eight
+                ; bits
+@loop:
+    lda #0                ; enable card (CS low), set MOSI (resting state), SCK low
+    sta VIA2_PORTA
+    lda #(SCK)          ; toggle the clock high
+    sta VIA2_PORTA
+    lda VIA2_PORTA             ; read next bit
+    and #(MISO)
+    clc                        ; default to clearing the bottom bit
+    beq @bitnotset             ; unless MISO was set
+    sec                        ; in which case get ready to set the bottom bit
+@bitnotset: 
+    txa                        ; transfer partial result from X
+    rol                        ; rotate carry bit into read result, and loop bit into carry
+    tax                        ; save partial result back to X
+    bcs @loop                  ; loop if we need to read more bits
+    rts
+
+; -----------------------------------------------------------------------------
+; Tick the clock 8 times with descending bits on MOSI
+; SD communication is mostly half-duplex so we ignore anything it sends back
+; here.
+; Inputs: byte to send in A
+; Outputs: None
+; clobbers: X, Y and A
+; -----------------------------------------------------------------------------
+spi_writebyte:
+    ldx #8                          ; send 8 bits
+@loop:  
+    asl                             ; shift next bit into carry
+    tay                             ; save remaining bits for later
+    lda #0  
+    bcc @sendbit                    ; if carry clear, don't set MOSI for this bit
+    ora #(MOSI) 
+@sendbit:   
+    sta VIA2_PORTA                  ; set MOSI (or not) first with SCK low
+    eor #(SCK)  
+    sta VIA2_PORTA                  ; raise SCK keeping MOSI the same, to send the bit
+    tya                             ; restore remaining bits to send
+    dex 
+    bne @loop                       ; loop if there are more bits to send
+    rts

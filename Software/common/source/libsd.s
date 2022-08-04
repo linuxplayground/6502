@@ -8,9 +8,6 @@
         .export sd_readsector
         .export zp_sd_currentsector
 
-.ifndef DEBUG
-    DEBUG = 0
-.endif
         .bss
 zp_sd_currentsector:    .res 4      ; 32 bit address of the current sector.
 

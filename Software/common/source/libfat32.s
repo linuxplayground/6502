@@ -1,18 +1,15 @@
-        .include "libsd.inc"
-        .include "macros.inc"
-        .include "tty.inc"
-        .include "zeropage.inc"
+    .include "libsd.inc"
+    .include "macros.inc"
+    .include "tty.inc"
+    .include "zeropage.inc"
 
-        .export fat32_init
-        .export fat32_list
-        .export fat32_openfile
-        .export fat32_readfile
+    .export fat32_init
+    .export fat32_list
+    .export fat32_openfile
+    .export fat32_readfile
 
-        .import __BUFFERS_START__
+    .import __BUFFERS_START__
 
-.ifndef DEBUG
-    DEBUG            = 0
-.endif
 fat32_readbuffer = __BUFFERS_START__
 
 .macro reset_sd_address
@@ -247,6 +244,7 @@ fat32_list:
     jsr _tty_send_newline
     reset_sd_address
 
+    jmp @got_data
 @list_next:
     clc
     lda zp_sd_address

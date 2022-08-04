@@ -1,13 +1,14 @@
     .include "utils.inc"
+    .include "via_const.inc"
 
     .import __VIA2_START__
 
 VIA2_PORTA  = __VIA2_START__ + $1	; check if some buttons have been pressed.
 VIA2_DDRA   = __VIA2_START__ + $3   ; Port A data direction register
 
-SCK   = %00000001
-CS    = %00001000
-MOSI  = %00000100
+LED_CS          = %10000000     ; 
+LED_SCK         = %01000000
+LED_DIN         = %00100000
 
 DECODE_MODE     = $09                       
 INTENSITY       = $0a                        
@@ -75,10 +76,10 @@ exit:
         rts
 
 led_init:
-        lda #(SCK|CS|MOSI)
+        lda #(LED_SCK|LED_CS|LED_DIN)
         sta VIA2_DDRA
 
-        lda #CS
+        lda #LED_CS
         sta VIA2_PORTA
 
         lda #DISPLAY_TEST
@@ -128,7 +129,7 @@ spisend:
         plx
         txa
         jsr spibyte
-        lda #CS
+        lda #LED_CS
         sta VIA2_PORTA
         rts
 
@@ -141,13 +142,13 @@ spibytelp:
         tya		        ; (2) set A to 0
         asl outb	    ; (5) shift MSB in to carry
         bcc spibyte1	; (2)
-        ora #MOSI	    ; (2) set MOSI if MSB set
+        ora #LED_DIN	    ; (2) set LED_DIN if MSB set
 spibyte1:
-        sta VIA2_PORTA	; (4) output (MOSI, SCS low, SCLK low)
+        sta VIA2_PORTA	; (4) output (LED_DIN, SCS low, SCLK low)
         tya		        ; (2) set A to 0 (Do it here for delay reasons)
         inc VIA2_PORTA	; (6) toggle clock high (SCLK is bit 0)
         clc		        ; (2) clear C (Not affected by bit)
-        bit VIA2_PORTA  ; (4) copy MISO (bit 7) in to N (and MOSI in to V)
+        bit VIA2_PORTA  ; (4) copy MISO (bit 7) in to N (and LED_DIN in to V)
         bpl spibyte2	; (2)
         sec		        ; (2) set C is MISO bit is set (i.e. N)
 spibyte2:
